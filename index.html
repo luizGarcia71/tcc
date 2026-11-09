@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gym CRM — Biofit</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#f26b1d">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#eceef1;--card:#fff;--tx:#16181d;--mut:#667;--bd:#dcdfe4;--pri:#f26b1d;--ok:#12803c;--bad:#c62828;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101215;--card:#1a1d22;--tx:#eef0f3;--mut:#9aa1ab;--bd:#2c3037;--ok:#4ade80;--bad:#f87171;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#101215;--card:#1a1d22;--tx:#eef0f3;--mut:#9aa1ab;--bd:#2c3037;--ok:#4ade80;--bad:#f87171;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--card)}
+button,input,select,textarea{font:inherit;color:inherit}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:6px;padding:8px 14px;flex-wrap:wrap}
+.logo{font-weight:800;font-size:19px;letter-spacing:-.02em;margin-right:12px}.logo b{color:var(--pri)}
+nav{display:flex;gap:2px;flex:1;overflow-x:auto}
+.tab{background:none;border:0;padding:8px 12px;border-radius:8px;cursor:pointer;color:var(--mut);font-weight:600;white-space:nowrap}
+.tab.on{background:var(--pri);color:#fff}
+main{max-width:1020px;margin:0 auto;padding:18px 14px 40px}
+h2{margin:0 0 14px;font-size:24px;letter-spacing:-.02em}
+.bar{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}.bar input{flex:1;min-width:180px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px}
+.box{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px}
+.k{color:var(--mut);font-size:13px}.n{font-size:34px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.n.hot{color:var(--pri)}
+.wrap{overflow-x:auto;background:var(--card);border:1px solid var(--bd);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:640px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--bd);white-space:nowrap}
+th{font-size:13px;color:var(--mut);font-weight:600}tr:last-child td{border-bottom:0}
+tr.late{box-shadow:inset 3px 0 var(--bad)}
+.mut{color:var(--mut)}.ok{color:var(--ok)}.bad{color:var(--bad)}.tag{font-weight:700}
+.b{background:var(--pri);color:#fff;border:0;border-radius:8px;padding:9px 14px;font-weight:700;cursor:pointer}
+.b:focus-visible,.tab:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
+.b.g{background:none;color:var(--tx);border:1px solid var(--bd)}.b.s{padding:4px 9px;font-size:13px}.b.r{background:var(--bad)}
+.acts{display:flex;gap:6px}
+dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);color:var(--tx);width:min(440px,92vw);padding:20px}
+dialog::backdrop{background:rgba(0,0,0,.5)}
+dialog h3{margin:0 0 6px}
+label{display:block;margin-top:10px;font-size:13px;color:var(--mut)}
+input,select,textarea{width:100%;box-sizing:border-box;padding:9px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);margin-top:3px}
+.row{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+.err{color:var(--bad);min-height:1.2em;margin:8px 0 0;font-size:14px}
+svg text{fill:var(--mut);font-size:12px}svg .v{fill:var(--tx);font-weight:700}svg rect{fill:var(--pri)}
+#auth{max-width:340px;margin:12vh auto;padding:0 16px}
+#toast{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:9px 16px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:20}
+#toast.on{opacity:1}
+.cards.w{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.ck{display:flex;gap:8px;align-items:center;margin-top:6px;color:var(--tx)}.ck input{width:auto;margin:0}
+.day{display:flex;flex-direction:column;gap:6px}.day.hoje{border-color:var(--pri);box-shadow:inset 0 3px var(--pri)}.dn{font-weight:800;font-size:17px;line-height:1.2}
+.prog{height:8px;border-radius:5px;background:var(--bd);overflow:hidden;margin-top:8px}.prog i{display:block;height:100%;background:var(--pri)}
+details{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 14px;margin-bottom:8px}summary{cursor:pointer;font-weight:700}details ul{margin:8px 0 0;padding-left:18px}
+.hist{display:flex;gap:8px;align-items:flex-end;margin-top:10px}.col{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;min-width:0}
+.bar2{width:100%;height:80px;background:var(--bd);border-radius:6px;display:flex;align-items:flex-end;overflow:hidden}.bar2 i{display:block;width:100%;background:var(--pri)}
+.col .k{font-size:12px}.sub{font-size:18px;margin:22px 0 10px}.lst{margin:0;padding:0;list-style:none}.lst li{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--bd)}.lst li:last-child{border-bottom:0}
+.n.sm{font-size:26px}
+.ex{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)}.ex:last-child{border-bottom:0}
+.exf{position:relative;width:130px;flex:none}.fig{width:100%;display:block}
+.ph{position:absolute;top:0;right:0;font-size:12px;font-weight:700;color:var(--pri);background:rgba(242,107,29,.14);border-radius:6px;padding:1px 7px}
+.exi{min-width:0}.exi b{font-size:16px}.exi .k{margin-top:2px}
+.exr{border:1px solid var(--bd);border-radius:10px;padding:8px 10px;margin-top:8px}.exr2{display:grid;grid-template-columns:1fr 1.4fr;gap:8px}
+</style>
+</head>
+<body>
+<div id="auth"></div>
+<div id="app" hidden>
+<header>
+  <span class="logo">Bio<b>fit</b></span>
+  <nav>
+    <button class="tab" data-v="dash">Painel</button>
+    <button class="tab" data-v="alunos">Alunos</button>
+    <button class="tab" data-v="planos">Planos</button>
+    <button class="tab" data-v="pags">Pagamentos</button>
+    <button class="tab" data-v="treinos">Treinos</button>
+    <button class="tab" data-v="valid">Validação</button>
+    <button class="tab" data-v="rel">Relatórios</button>
+  </nav>
+  <button class="b g s" onclick="backup()">Backup</button>
+  <button class="b g s" onclick="logout()">Sair</button>
+</header>
+<main id="v"></main>
+</div>
+<div id="stu" hidden></div>
+<dialog id="dlg"></dialog>
+<div id="toast" role="status"></div>
+<script>
+const $=s=>document.querySelector(s),KEY='biofit_gym_crm_v1';
+let db,view='dash',logged=false;
+const R=new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad=n=>String(n).padStart(2,'0');
+const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const today=()=>iso(new Date());
+const parse=s=>new Date(s+'T00:00:00');
+const fd=s=>s?parse(s).toLocaleDateString('pt-BR'):'—';
+function addM(s,n){const d=parse(s),day=d.getDate();d.setDate(1);d.setMonth(d.getMonth()+n);d.setDate(Math.min(day,new Date(d.getFullYear(),d.getMonth()+1,0).getDate()));return iso(d)}
+function load(){try{db=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+  if(!db)db={user:null,seq:4,planos:[{id:1,nome:'Mensal',valor:120,meses:1},{id:2,nome:'Trimestral',valor:300,meses:3},{id:3,nome:'Anual',valor:1000,meses:12}],alunos:[],pagamentos:[]}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){toast('Não foi possível salvar neste navegador')}}
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),2500)}
+const nid=()=>db.seq++,pl=id=>db.planos.find(p=>p.id==id),al=id=>db.alunos.find(a=>a.id==id);
+async function sha(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+
+/* ---------- acesso ---------- */
+function authUI(){const novo=!db.user;
+  $('#auth').innerHTML=`<h2 class="logo" style="font-size:30px">Bio<b>fit</b></h2><p class="mut">${novo?'Crie o acesso do administrador para começar.':'Entre para gerenciar a academia.'}</p>
+  <form id="fa"><label>E-mail<input id="em" type="email" required autocomplete="username"></label>
+  <label>Senha<input id="pw" type="password" required minlength="6" autocomplete="${novo?'new-password':'current-password'}"></label>
+  <p class="err" id="ea"></p><button class="b" style="width:100%">${novo?'Criar acesso':'Entrar'}</button></form>${novo?'':'<p style="text-align:center"><button class="b g s" type="button" onclick="stuLogin()">Sou aluno</button></p>'}`;
+  $('#fa').onsubmit=async e=>{e.preventDefault();const em=$('#em').value.trim().toLowerCase(),h=await sha(em+':'+$('#pw').value);
+    if(!db.user){db.user={email:em,h};save()}else if(db.user.email!==em||db.user.h!==h)return $('#ea').textContent='E-mail ou senha inválidos.';
+    logged=true;try{sessionStorage.setItem('ok','1')}catch(x){}start()}}
+function start(){$('#auth').hidden=true;$('#app').hidden=false;show()}
+function logout(){logged=false;try{sessionStorage.removeItem('ok');sessionStorage.removeItem('st')}catch(x){}location.reload()}
+
+/* ---------- modal ---------- */
+function modal(title,body,ok,cb){const d=$('#dlg');d.style.width='';
+  d.innerHTML=`<form><h3>${title}</h3>${body}<p class="err" id="er"></p><div class="row"><button type="button" class="b g" id="cx">Cancelar</button>${ok?`<button class="b">${ok}</button>`:''}</div></form>`;
+  d.showModal();$('#cx').onclick=()=>d.close();
+  d.querySelector('form').onsubmit=e=>{e.preventDefault();const fd=new FormData(e.target),r=cb(Object.fromEntries(fd),fd);if(r)$('#er').textContent=r;else{d.close();show()}}}
+const f=(l,n,v='',a='')=>`<label>${l}<input name="${n}" value="${esc(v)}" ${a}></label>`;
+function ask(msg,fn){modal('Confirmar',`<p>${msg}</p>`,'Excluir',()=>{fn();toast('Excluído')})}
+document.addEventListener('input',e=>{if(e.target.name==='cpf'){const d=e.target.value.replace(/\D/g,'').slice(0,11);
+  e.target.value=d.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2')}});
+
+/* ---------- regras ---------- */
+function situ(a){if(a.status==='INATIVO')return['Inativo','mut'];return a.venc>=today()?['Em dia','ok']:['Inadimplente','bad']}
+function pagar(alunoId,valor){const a=al(alunoId),p=pl(a.planoId);if(!p)return'Aluno sem plano.';
+  const base=a.venc&&a.venc>=today()?a.venc:today();a.venc=addM(base,p.meses);
+  db.pagamentos.push({id:nid(),alunoId:a.id,planoId:p.id,valor:Number(valor),data:today(),status:'PAGO'});save()}
+
+/* ---------- telas ---------- */
+function show(){if(stuId)return stuShow();document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.v===view));
+  $('#v').innerHTML=({dash,alunos,planos,pags,treinos,valid,rel})[view]();hydrate($('#v'));const n=db.envios.filter(e=>e.status==='PENDENTE').length;document.querySelector('[data-v="valid"]').textContent='Validação'+(n?` (${n})`:'')}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{view=t.dataset.v;show()});
+
+function dash(){const h=today(),m=h.slice(0,7),A=db.alunos.filter(a=>a.status==='ATIVO');
+  const ativos=A.filter(a=>a.venc>=h).length,inad=A.filter(a=>a.venc<h).length,
+  fat=db.pagamentos.filter(p=>p.data.startsWith(m)).reduce((s,p)=>s+p.valor,0),novos=db.alunos.filter(a=>a.inicio.startsWith(m)).length;
+  const ms=[];for(let i=5;i>=0;i--){const d=new Date();d.setDate(1);d.setMonth(d.getMonth()-i);const k=iso(d).slice(0,7);
+    ms.push({l:d.toLocaleDateString('pt-BR',{month:'short'}).replace('.',''),v:db.pagamentos.filter(p=>p.data.startsWith(k)).reduce((s,p)=>s+p.valor,0)})}
+  const mx=Math.max(1,...ms.map(x=>x.v));
+  const bars=ms.map((x,i)=>{const hh=x.v/mx*120,X=40+i*95;return`<rect x="${X}" y="${150-hh}" width="60" height="${Math.max(hh,2)}" rx="5"/><text class="v" x="${X+30}" y="${142-hh}" text-anchor="middle">${x.v?R.format(x.v):''}</text><text x="${X+30}" y="172" text-anchor="middle">${x.l}</text>`}).join('');
+  return`<h2>Painel</h2><div class="cards">
+  <div class="box"><div class="k">Receita do mês</div><div class="n hot">${R.format(fat)}</div></div>
+  <div class="box"><div class="k">Alunos em dia</div><div class="n">${ativos}</div></div>
+  <div class="box"><div class="k">Inadimplentes</div><div class="n ${inad?'bad':''}">${inad}</div></div>
+  <div class="box"><div class="k">Novos no mês</div><div class="n">${novos}</div></div></div>
+  <div class="box"><div class="k">Receita dos últimos 6 meses</div><svg viewBox="0 0 640 185" style="width:100%" role="img" aria-label="Receita mensal">${bars}</svg></div>`}
+
+function rowsA(q=''){q=q.toLowerCase();return db.alunos.filter(a=>a.nome.toLowerCase().includes(q)||a.cpf.includes(q)).sort((a,b)=>a.nome.localeCompare(b.nome)).map(a=>{const[s,c]=situ(a);
+  return`<tr class="${s==='Inadimplente'?'late':''}"><td>${esc(a.nome)}</td><td>${esc(a.cpf)}</td><td>${esc(pl(a.planoId)?.nome||'—')}</td><td>${fd(a.venc)}</td><td class="tag ${c}">${s}</td>
+  <td class="acts"><button class="b s" onclick="pg(${a.id})">Pagar</button><button class="b g s" onclick="hA(${a.id})">Histórico</button><button class="b g s" onclick="edA(${a.id})">Editar</button><button class="b g s" onclick="rmA(${a.id})">Excluir</button></td></tr>`}).join('')||'<tr><td colspan="6" class="mut">Nenhum aluno encontrado. Use “Novo aluno” para cadastrar.</td></tr>'}
+function alunos(){return`<h2>Alunos</h2><div class="bar"><input placeholder="Buscar por nome ou CPF" oninput="$('#tb').innerHTML=rowsA(this.value)" aria-label="Buscar"><button class="b" onclick="edA()">Novo aluno</button></div>
+  <div class="wrap"><table><thead><tr><th>Nome</th><th>CPF</th><th>Plano</th><th>Vencimento</th><th>Situação</th><th></th></tr></thead><tbody id="tb">${rowsA()}</tbody></table></div>`}
+function pg(id){const a=al(id),p=pl(a.planoId);if(!p)return toast('Aluno sem plano');const e=pagar(id,p.valor);if(e)return toast(e);toast('Pagamento de '+R.format(p.valor)+' registrado');show()}
+function edA(id){if(!db.planos.length)return toast('Cadastre um plano primeiro');const a=id?al(id):{nome:'',cpf:'',telefone:'',email:'',planoId:db.planos[0].id,inicio:today(),status:'ATIVO',login:'',rotina:db.treinos.map(t=>t.id)};
+  const opt=(arr,v)=>arr.map(([k,l])=>`<option value="${k}" ${k==v?'selected':''}>${esc(l)}</option>`).join('');
+  modal(id?'Editar aluno':'Novo aluno',f('Nome','nome',a.nome,'required')+f('CPF','cpf',a.cpf,'required inputmode="numeric"')+f('Telefone','telefone',a.telefone,'type="tel"')+f('E-mail','email',a.email,'type="email"')+
+  `<label>Plano<select name="planoId">${opt(db.planos.map(p=>[p.id,`${p.nome} — ${R.format(p.valor)}`]),a.planoId)}</select></label>`+f('Início','inicio',a.inicio,'type="date" required')+
+  `<label>Status<select name="status">${opt([['ATIVO','Ativo'],['INATIVO','Inativo']],a.status)}</select></label>`+f('Usuário de acesso do aluno','login',a.login||'','autocomplete="off"')+f(id?'Nova senha (vazio mantém a atual)':'Senha do aluno','senha','','type="password" minlength="6" autocomplete="new-password"')+`<label>Treinos da rotina</label>`+(db.treinos.map(t=>`<label class="ck"><input type="checkbox" name="rotina" value="${t.id}" ${(a.rotina||[]).includes(t.id)?'checked':''}>${esc(t.nome)}</label>`).join('')||'<p class="mut" style="font-size:13px">Cadastre treinos na aba Treinos.</p>'),'Salvar',(d,fd)=>{
+    if(d.cpf.replace(/\D/g,'').length!==11)return'CPF deve ter 11 dígitos.';
+    if(db.alunos.some(x=>x.cpf===d.cpf&&x.id!==id))return'CPF já cadastrado.';const lg=(d.login||'').trim().toLowerCase();if(lg&&db.alunos.some(x=>x.login===lg&&x.id!==id))return'Este usuário já existe.';if(lg&&!a.h&&!(d.senha&&d.senha.length>=6))return'Defina uma senha com 6 ou mais caracteres.';
+    d.planoId=Number(d.planoId);const n=a.id?a:{id:nid()};const mudou=!a.id||a.planoId!==d.planoId||a.inicio!==d.inicio;
+    const{senha,...r}=d;Object.assign(n,r);n.login=(d.login||'').trim().toLowerCase();n.rotina=fd.getAll('rotina').map(Number);if(senha)sha(n.id+':'+senha).then(h=>{n.h=h;save()});if(mudou)n.venc=addM(d.inicio,pl(d.planoId).meses);if(!a.id)db.alunos.push(n);save();toast('Aluno salvo')})}
+function rmA(id){const a=al(id);ask(`Excluir <b>${esc(a.nome)}</b> e o histórico de pagamentos dele?`,()=>{db.alunos=db.alunos.filter(x=>x.id!==id);db.pagamentos=db.pagamentos.filter(p=>p.alunoId!==id);db.envios.filter(e=>e.alunoId===id).forEach(e=>mdel(e.mid));db.envios=db.envios.filter(e=>e.alunoId!==id);save();show()})}
+
+function planos(){const r=db.planos.map(p=>`<tr><td>${esc(p.nome)}</td><td>${R.format(p.valor)}</td><td>${p.meses} ${p.meses>1?'meses':'mês'}, ${p.freq||3} treinos por semana</td><td>${db.alunos.filter(a=>a.planoId===p.id).length}</td>
+  <td class="acts"><button class="b g s" onclick="edP(${p.id})">Editar</button><button class="b g s" onclick="rmP(${p.id})">Excluir</button></td></tr>`).join('')||'<tr><td colspan="5" class="mut">Nenhum plano. Crie o primeiro com “Novo plano”.</td></tr>';
+  return`<h2>Planos</h2><div class="bar"><button class="b" onclick="edP()">Novo plano</button></div><div class="wrap"><table><thead><tr><th>Nome</th><th>Valor</th><th>Duração</th><th>Alunos</th><th></th></tr></thead><tbody>${r}</tbody></table></div>`}
+function edP(id){const p=id?pl(id):{nome:'',valor:'',meses:1,freq:3};
+  modal(id?'Editar plano':'Novo plano',f('Nome','nome',p.nome,'required')+f('Valor (R$)','valor',p.valor,'type="number" min="0.01" step="0.01" required')+f('Duração (meses)','meses',p.meses,'type="number" min="1" max="36" step="1" required')+f('Treinos por semana','freq',p.freq||3,'type="number" min="1" max="7" step="1" required'),'Salvar',d=>{
+    const n=id?p:{id:nid()};n.nome=d.nome.trim();n.valor=Number(d.valor);n.meses=Number(d.meses);n.freq=Number(d.freq);if(!id)db.planos.push(n);save();toast('Plano salvo')})}
+function rmP(id){const u=db.alunos.filter(a=>a.planoId===id).length;if(u)return toast(`Plano em uso por ${u} aluno(s). Mude o plano deles antes.`);ask('Excluir este plano?',()=>{db.planos=db.planos.filter(p=>p.id!==id);save();show()})}
+
+function pags(){const r=[...db.pagamentos].sort((a,b)=>b.data.localeCompare(a.data)||b.id-a.id).map(p=>`<tr><td>${fd(p.data)}</td><td>${esc(al(p.alunoId)?.nome||'—')}</td><td>${R.format(p.valor)}</td><td class="tag ok">${p.status==='PAGO'?'Pago':p.status}</td></tr>`).join('')||'<tr><td colspan="4" class="mut">Nenhum pagamento ainda. Registre o primeiro com “Novo pagamento”.</td></tr>';
+  return`<h2>Pagamentos</h2><div class="bar"><button class="b" onclick="newPg()">Novo pagamento</button></div><div class="wrap"><table><thead><tr><th>Data</th><th>Aluno</th><th>Valor</th><th>Status</th></tr></thead><tbody>${r}</tbody></table></div>`}
+function sv(s){const a=al(s.value);$('#vl').value=a?pl(a.planoId)?.valor??'':''}
+function newPg(){if(!db.alunos.length)return toast('Cadastre um aluno primeiro');const a0=db.alunos[0];
+  modal('Novo pagamento',`<label>Aluno<select name="alunoId" onchange="sv(this)">${db.alunos.map(a=>`<option value="${a.id}">${esc(a.nome)}</option>`).join('')}</select></label>
+  <label>Valor (R$)<input id="vl" name="valor" type="number" min="0.01" step="0.01" required value="${pl(a0.planoId)?.valor??''}"></label><p class="mut" style="font-size:13px">O vencimento avança pela duração do plano do aluno.</p>`,'Registrar',d=>{
+    const e=pagar(Number(d.alunoId),d.valor);if(e)return e;toast('Pagamento registrado')})}
+
+/* ---------- animações dos exercícios ---------- */
+const rad=d=>d*Math.PI/180;
+function limb(A,B,a,b,s){const dx=B[0]-A[0],dy=B[1]-A[1],d=Math.min(Math.hypot(dx,dy),a+b-0.01),g=Math.atan2(dy,dx),al=Math.acos(Math.max(-1,Math.min(1,(a*a+d*d-b*b)/(2*a*d))));return[A,[A[0]+a*Math.cos(g+s*al),A[1]+a*Math.sin(g+s*al)],[A[0]+d*Math.cos(g),A[1]+d*Math.sin(g)]]}
+const AN={
+agachamento:{n:'Agachamento',tip:'Joelhos alinhados com os pés e coluna reta.',dur:3.4,lb:t=>t<.5?'Descer':'Subir',f:t=>{const s=.5-.5*Math.cos(2*Math.PI*t),hip=[100-30*s,111+31*s],le=.75*s,sh=[hip[0]+55*Math.sin(le),hip[1]-55*Math.cos(le)],leg=limb(hip,[100,188],40,40,-1),far=limb(hip,[94,188],40,40,-1),ph=rad(80-80*s),hand=[sh[0]+52*Math.cos(ph),sh[1]+52*Math.sin(ph)],head=[sh[0]+16*Math.sin(le*.8),sh[1]-16*Math.cos(le*.8)];
+ return{lines:[{p:far.concat([[far[2][0]+14,188]]),c:'far'},{p:[hip,sh]},{p:leg.concat([[leg[2][0]+14,188]])},{p:[sh,hand]}],head:[head[0],head[1],11],dots:[leg[1]]}}},
+flexao:{n:'Flexão de braço',tip:'Corpo em linha reta, cotovelos próximos do tronco.',dur:3,lb:t=>t<.5?'Descer':'Subir',f:t=>{const s=.5-.5*Math.cos(2*Math.PI*t),toe=[30,188],y=133+37*s,h=188-y,sh=[30+Math.sqrt(16900-h*h),y],arm=limb(sh,[148,188],28,28,1),u=[(sh[0]-toe[0])/130,(sh[1]-toe[1])/130],head=[sh[0]+19*u[0],sh[1]+19*u[1]+2];
+ return{lines:[{p:[toe,sh]},{p:arm}],head:[head[0],head[1],11],dots:[arm[1]]}}},
+afundo:{n:'Afundo',tip:'Tronco ereto, joelho da frente sobre o tornozelo.',dur:3.4,lb:t=>t<.5?'Descer':'Subir',f:t=>{const s=.5-.5*Math.cos(2*Math.PI*t),hip=[100,120+26*s],sh=[hip[0],hip[1]-52],fr=limb(hip,[138,188],40,40,-1),bk=limb(hip,[62,186],40,40,-1),hand=[sh[0]+8,sh[1]+48];
+ return{lines:[{p:bk.concat([[bk[2][0]+9,189]]),c:'far'},{p:[hip,sh]},{p:fr.concat([[fr[2][0]+14,188]])},{p:[sh,hand]}],head:[sh[0],sh[1]-16,11],dots:[fr[1]]}}},
+prancha:{n:'Prancha',tip:'Quadril alinhado, abdômen firme, respiração calma.',dur:4,lb:()=>'Segurar',f:t=>{const b=1.2*Math.sin(2*Math.PI*t),toe=[30,188],sh=[150,150+b],el=[150,187],u=[sh[0]-toe[0],sh[1]-toe[1]],n=Math.hypot(u[0],u[1]),head=[sh[0]+19*u[0]/n,sh[1]+19*u[1]/n+2];
+ return{lines:[{p:[toe,sh]},{p:[sh,el,[178,187]]}],head:[head[0],head[1],11],dots:[[90,169+b/2]]}}},
+polichinelo:{n:'Polichinelo',tip:'Aterrisse leve, braços acima da cabeça.',dur:1.3,lb:t=>t<.5?'Abrir':'Fechar',f:t=>{const w=2*Math.PI*t,s=.5-.5*Math.cos(w),b=-9*Math.abs(Math.sin(w)),dx=6+32*s,q=Math.sqrt(4900-dx*dx),hy=188-q+b,sy=hy-50,th=rad(15+140*s),hx=58*Math.sin(th),hyy=sy+58*Math.cos(th);
+ return{lines:[{p:[[100,hy],[100,sy]]},{p:[[100,hy],[100-dx,hy+q]]},{p:[[100,hy],[100+dx,hy+q]]},{p:[[100,sy],[100-hx,hyy]]},{p:[[100,sy],[100+hx,hyy]]}],head:[100,sy-16,11],dots:[[100-hx,hyy],[100+hx,hyy]]}}},
+abdominal:{n:'Abdominal',tip:'Suba pelo abdômen, sem puxar o pescoço.',dur:2.6,lb:t=>t<.5?'Subir':'Descer',f:t=>{const s=.5-.5*Math.cos(2*Math.PI*t),a=rad(40*s),hip=[105,178],foot=[150,185],lg=limb(hip,foot,40,40,-1),sh=[hip[0]-55*Math.cos(a),hip[1]-55*Math.sin(a)],head=[sh[0]-19*Math.cos(a+.2),sh[1]-19*Math.sin(a+.2)];
+ return{lines:[{p:lg.concat([[160,188]])},{p:[hip,sh]},{p:[sh,[head[0]+6,head[1]+10]]}],head:[head[0],head[1],11],dots:[sh]}}}
+};
+const NSV='http://www.w3.org/2000/svg',ANREG=new Set(),anStill=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
+let anRun=false,anLast=0;
+function guessAnim(nome){const s=String(nome||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+  return/agach/.test(s)?'agachamento':/flex/.test(s)?'flexao':/afund/.test(s)?'afundo':/prancha/.test(s)?'prancha':/polich/.test(s)?'polichinelo':/abdom|crunch/.test(s)?'abdominal':''}
+function migra(){db.treinos=db.treinos||[];db.envios=db.envios||[];
+  db.treinos.forEach(t=>{t.ex=(t.ex||[]).map(x=>typeof x==='string'?{n:x,s:'',a:guessAnim(x)}:x)});
+  if(!db.seeded){if(!db.treinos.length){db.treinos.push(
+    {id:nid(),nome:'Treino A',ex:[{n:'Agachamento',s:'3x12',a:'agachamento'},{n:'Flexão de braço',s:'3x10',a:'flexao'}]},
+    {id:nid(),nome:'Treino B',ex:[{n:'Afundo',s:'3x10 por perna',a:'afundo'},{n:'Prancha',s:'3x30 s',a:'prancha'}]},
+    {id:nid(),nome:'Treino C',ex:[{n:'Polichinelo',s:'3x30 s',a:'polichinelo'},{n:'Abdominal',s:'3x15',a:'abdominal'}]})}
+    db.seeded=true}}
+function exHTML(x){const A=AN[x.a];
+  return`<div class="ex"><div class="exf">${A?`<svg class="fig" data-an="${x.a}" viewBox="0 0 200 200" role="img" aria-label="Animação: ${esc(A.n)}"><line x1="10" y1="190" x2="190" y2="190" stroke="var(--bd)" stroke-width="2" stroke-linecap="round"/><g class="gb"></g><g class="gd"></g></svg><span class="ph"></span>`:'<div class="mut" style="font-size:13px;padding:30px 0;text-align:center">Sem animação</div>'}</div><div class="exi"><b>${esc(x.n)}</b>${x.s?`<div class="k">${esc(x.s)}</div>`:''}${A?`<div class="k">${esc(A.tip)}</div>`:''}</div></div>`}
+const exList=t=>t.ex.map(exHTML).join('')||'<p class="mut">Este treino ainda não tem exercícios.</p>';
+function anDraw(el){const c=el._an,r=c.A.f(c.t),gb=el.querySelector('.gb'),gd=el.querySelector('.gd');
+  while(c.paths.length<r.lines.length){const p=document.createElementNS(NSV,'path');p.setAttribute('fill','none');p.setAttribute('stroke','var(--tx)');p.setAttribute('stroke-width','5');p.setAttribute('stroke-linecap','round');p.setAttribute('stroke-linejoin','round');gb.insertBefore(p,c.head);c.paths.push(p)}
+  r.lines.forEach((l,i)=>{const p=c.paths[i];p.setAttribute('d','M'+l.p.map(q=>q[0].toFixed(1)+' '+q[1].toFixed(1)).join('L'));p.setAttribute('opacity',l.c==='far'?'0.4':'1')});
+  c.head.setAttribute('cx',r.head[0].toFixed(1));c.head.setAttribute('cy',r.head[1].toFixed(1));c.head.setAttribute('r',r.head[2]);
+  while(c.dots.length<r.dots.length){const d=document.createElementNS(NSV,'circle');d.setAttribute('r','4.5');d.setAttribute('fill','#f26b1d');gd.appendChild(d);c.dots.push(d)}
+  r.dots.forEach((d,i)=>{c.dots[i].setAttribute('cx',d[0].toFixed(1));c.dots[i].setAttribute('cy',d[1].toFixed(1))});
+  const l=c.A.lb(c.t);if(l!==c.lab){c.lab=l;if(c.ph)c.ph.textContent=l}}
+function startAnims(root){root.querySelectorAll('svg[data-an]').forEach(el=>{if(el._an)return;const A=AN[el.dataset.an];if(!A)return;
+  const head=document.createElementNS(NSV,'circle');head.setAttribute('fill','var(--card)');head.setAttribute('stroke','var(--tx)');head.setAttribute('stroke-width','4');el.querySelector('.gb').appendChild(head);
+  el._an={A,t:anStill?.45:0,paths:[],dots:[],head,lab:'',ph:el.nextElementSibling};ANREG.add(el);anDraw(el)});
+  if(!anRun&&!anStill){anRun=true;anLast=performance.now();requestAnimationFrame(anTick)}}
+function anTick(n){const dt=Math.min(.1,(n-anLast)/1000);anLast=n;
+  ANREG.forEach(el=>{if(!el.isConnected){ANREG.delete(el);return}if(!el.getClientRects().length)return;el._an.t=(el._an.t+dt/el._an.A.dur)%1;anDraw(el)});
+  requestAnimationFrame(anTick)}
+
+/* ---------- treinos ---------- */
+const DN=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],PAT={1:[3],2:[2,4],3:[1,3,5],4:[1,2,4,5],5:[1,2,3,4,5],6:[1,2,3,4,5,6],7:[1,2,3,4,5,6,0]};
+const tr=id=>db.treinos.find(t=>t.id==id);
+function weekOf(k){const d=new Date();d.setDate(d.getDate()-(d.getDay()+6)%7-7*k);return[0,1,2,3,4,5,6].map(i=>{const x=new Date(d);x.setDate(d.getDate()+i);return iso(x)})}
+const week=()=>weekOf(0);
+function slot(a,date){const p=pl(a.planoId);if(!p)return;const days=PAT[Math.min(7,Math.max(1,p.freq||3))],i=days.indexOf(parse(date).getDay());if(i<0)return;const r=a.rotina||[];return{t:r.length?tr(r[i%r.length]):null}}
+function envOf(a,date){const l=db.envios.filter(e=>e.alunoId===a.id&&e.data===date);return l.find(e=>e.status==='APROVADO')||l.find(e=>e.status==='PENDENTE')||l[l.length-1]}
+const idb=new Promise((ok,no)=>{try{const r=indexedDB.open('biofit_media',1);r.onupgradeneeded=()=>r.result.createObjectStore('m');r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)}catch(e){no(e)}});
+const mx=(mode,fn)=>idb.then(d=>new Promise((ok,no)=>{const t=d.transaction('m',mode),q=fn(t.objectStore('m'));t.oncomplete=()=>ok(q.result);t.onerror=()=>no(t.error)}));
+const mput=(k,b)=>mx('readwrite',o=>o.put(b,k)),mget=k=>mx('readonly',o=>o.get(k)),mdel=k=>mx('readwrite',o=>o.delete(k)).catch(()=>{});
+function hydrate(root){root.querySelectorAll('[data-m]').forEach(async el=>{try{const b=await mget(el.dataset.m);if(!b)throw 0;const u=URL.createObjectURL(b);el.innerHTML=b.type.startsWith('video')?`<video src="${u}" controls playsinline style="width:100%;border-radius:8px"></video>`:`<img src="${u}" alt="Prova do treino" style="width:100%;border-radius:8px">`}catch(e){el.textContent='Arquivo não encontrado neste navegador.'}})}
+
+function treinos(){const r=db.treinos.map(t=>`<tr><td>${esc(t.nome)}</td><td>${t.ex.length} exercícios</td><td>${db.alunos.filter(a=>(a.rotina||[]).includes(t.id)).length} alunos</td><td class="acts"><button class="b g s" onclick="vT(${t.id})">Ver</button><button class="b g s" onclick="edT(${t.id})">Editar</button><button class="b g s" onclick="rmT(${t.id})">Excluir</button></td></tr>`).join('')||'<tr><td colspan="4" class="mut">Nenhum treino. Crie o primeiro com “Novo treino”.</td></tr>';
+  return`<h2>Treinos</h2><div class="bar"><button class="b" onclick="edT()">Novo treino</button></div><div class="wrap"><table><thead><tr><th>Treino</th><th>Exercícios</th><th>Em uso</th><th></th></tr></thead><tbody>${r}</tbody></table></div><p class="mut">Cada aluno recebe os treinos marcados no cadastro, distribuídos nos dias da semana conforme os treinos por semana do plano dele.</p>`}
+function exRow(x){x=x||{};
+  const opt='<option value="">Sem animação</option>'+Object.entries(AN).map(([k,v])=>`<option value="${k}" ${k===x.a?'selected':''}>${esc(v.n)}</option>`).join('');
+  return`<div class="exr">${f('Exercício','exn',x.n||'','placeholder="Agachamento" autocomplete="off"')}<div class="exr2">${f('Séries e repetições','exs',x.s||'','placeholder="3x12"')}<label>Animação<select name="exa">${opt}</select></label></div><button type="button" class="b g s" style="margin-top:8px" onclick="this.closest('.exr').remove()">Remover exercício</button></div>`}
+function addEx(){$('#exl').insertAdjacentHTML('beforeend',exRow())}
+document.addEventListener('input',e=>{if(e.target.name==='exn'){const r=e.target.closest('.exr'),sel=r&&r.querySelector('[name=exa]');if(sel&&!sel.value){const g=guessAnim(e.target.value);if(g)sel.value=g}}});
+function vT(id){const t=tr(id);modal(esc(t.nome),exList(t),null,()=>{});$('#cx').textContent='Fechar';$('#dlg').style.width='min(560px,94vw)';startAnims($('#dlg'))}
+function edT(id){const t=id?tr(id):{nome:'',ex:[]};
+  modal(id?'Editar treino':'Novo treino',f('Nome do treino','nome',t.nome,'required placeholder="Treino A"')+`<div id="exl">${(t.ex.length?t.ex:[{},{}]).map(exRow).join('')}</div><button type="button" class="b g s" style="margin-top:10px" onclick="addEx()">Adicionar exercício</button>`,'Salvar',(d,form)=>{
+    const N=form.getAll('exn'),S=form.getAll('exs'),Z=form.getAll('exa'),ex=N.map((nm,k)=>({n:nm.trim(),s:(S[k]||'').trim(),a:Z[k]||''})).filter(x=>x.n);
+    if(!ex.length)return'Adicione ao menos um exercício.';
+    const tt=id?t:{id:nid()};tt.nome=d.nome.trim();tt.ex=ex;if(!id)db.treinos.push(tt);save();toast('Treino salvo')})}
+function rmT(id){ask('Excluir este treino? Ele sai da rotina dos alunos.',()=>{db.treinos=db.treinos.filter(t=>t.id!==id);db.alunos.forEach(a=>a.rotina=(a.rotina||[]).filter(x=>x!==id));save();show()})}
+
+/* ---------- frequência e histórico ---------- */
+function ago(n){const d=new Date();d.setDate(d.getDate()-n);return iso(d)}
+function range(a,b){const r=[],e=parse(b);for(let d=parse(a);d<=e;d.setDate(d.getDate()+1))r.push(iso(d));return r}
+function freq(a,from,to){const s=from<a.inicio?a.inicio:from;if(s>to)return{prev:0,ok:0,pct:null};let prev=0,ok=0;
+  range(s,to).forEach(d=>{if(slot(a,d)){prev++;if(envOf(a,d)?.status==='APROVADO')ok++}});return{prev,ok,pct:prev?Math.round(ok/prev*100):null}}
+function streak(a){const h=today();let n=0;for(const d of range(ago(120),h).reverse()){if(d<a.inicio)break;if(!slot(a,d))continue;
+  if(envOf(a,d)?.status==='APROVADO')n++;else if(d!==h)break}return n}
+function resumo(a){const h=today(),A=db.envios.filter(e=>e.alunoId===a.id&&e.status==='APROVADO'),ds=[...new Set(A.map(e=>e.data))].sort();
+  return{f28:freq(a,ago(27),h),total:ds.length,seq:streak(a),ult:ds.length?ds[ds.length-1]:null}}
+const pc=v=>v==null?'—':v+'%',pcc=v=>v==null?'mut':v>=75?'ok':v<50?'bad':'';
+function histUI(a){const h=today(),r=resumo(a),
+  cols=[7,6,5,4,3,2,1,0].map(k=>{const w=weekOf(k),x=freq(a,w[0],w[6]<h?w[6]:h);
+    return`<div class="col"><div class="bar2" title="${x.pct==null?'Sem treinos previstos':x.pct+'%'}"><i style="height:${x.pct??0}%"></i></div><span class="k">${x.pct==null?'—':x.ok+'/'+x.prev}</span><span class="k mut">${w[0].slice(8)}/${w[0].slice(5,7)}</span></div>`}).join(''),
+  E=db.envios.filter(e=>e.alunoId===a.id).sort((x,y)=>y.ts-x.ts).slice(0,8),
+  st=e=>e.status==='APROVADO'?'<span class="tag ok">Validado</span>':e.status==='REJEITADO'?'<span class="tag bad">Rejeitado</span>':'<span class="tag" style="color:var(--pri)">Em análise</span>';
+  return`<div class="cards"><div class="box"><div class="k">Frequência (4 semanas)</div><div class="n sm ${pcc(r.f28.pct)}">${pc(r.f28.pct)}</div><div class="k">${r.f28.ok} de ${r.f28.prev} treinos</div></div>
+  <div class="box"><div class="k">Sequência atual</div><div class="n sm">${r.seq}</div><div class="k">${r.seq===1?'treino seguido':'treinos seguidos'}</div></div>
+  <div class="box"><div class="k">Treinos validados</div><div class="n sm">${r.total}</div><div class="k">Último: ${fd(r.ult)}</div></div></div>
+  <div class="box"><div class="k">Últimas 8 semanas (validados de previstos)</div><div class="hist">${cols}</div></div>
+  <h3 class="sub">Últimos envios</h3>${E.length?`<ul class="lst">${E.map(e=>`<li><span>${fd(e.data)}, ${esc(tr(e.treinoId)?.nome||'treino')}</span>${st(e)}</li>`).join('')}</ul>`:'<p class="mut">Nenhum envio ainda.</p>'}`}
+function hA(id){const a=al(id),P=db.pagamentos.filter(p=>p.alunoId===id).sort((x,y)=>y.data.localeCompare(x.data)||y.id-x.id).slice(0,5),[s,c]=situ(a);
+  modal(esc(a.nome),`<p class="k">${esc(pl(a.planoId)?.nome||'Sem plano')}, vence em ${fd(a.venc)}. <span class="tag ${c}">${s}</span></p>${histUI(a)}
+  <h3 class="sub">Últimos pagamentos</h3>${P.length?`<ul class="lst">${P.map(p=>`<li><span>${fd(p.data)}</span><span>${R.format(p.valor)}</span></li>`).join('')}</ul>`:'<p class="mut">Nenhum pagamento registrado.</p>'}
+  <p class="mut" style="font-size:13px">A frequência usa a rotina e o plano atuais do aluno.</p>`,null,()=>{});$('#cx').textContent='Fechar';$('#dlg').style.width='min(640px,94vw)'}
+
+/* ---------- relatórios ---------- */
+let relDias=30;
+function relRows(){const h=today(),from=ago(relDias-1);
+  return db.alunos.filter(a=>a.status==='ATIVO').map(a=>{const r=freq(a,from,h),[s]=situ(a),u=db.envios.filter(e=>e.alunoId===a.id&&e.status==='APROVADO').map(e=>e.data).sort().pop();
+    return{a,r,s,u,plano:pl(a.planoId)?.nome||'—'}}).sort((x,y)=>(x.r.pct??101)-(y.r.pct??101)||x.a.nome.localeCompare(y.a.nome))}
+function rel(){const h=today(),from=ago(relDias-1),L=relRows(),V=L.filter(x=>x.r.pct!=null),
+  med=V.length?Math.round(V.reduce((s,x)=>s+x.r.pct,0)/V.length):null,baixa=V.filter(x=>x.r.pct<50).length,
+  PG=db.pagamentos.filter(p=>p.data>=from),rec=PG.reduce((s,p)=>s+p.valor,0),pend=db.envios.filter(e=>e.status==='PENDENTE').length,
+  G={};PG.forEach(p=>{const n=pl(p.planoId??al(p.alunoId)?.planoId)?.nome||'—',g=G[n]||(G[n]={q:0,v:0});g.q++;g.v+=p.valor});
+  const rows=L.map(({a,r,s,u,plano})=>`<tr class="${s==='Inadimplente'?'late':''}"><td>${esc(a.nome)}</td><td>${esc(plano)}</td><td>${r.prev}</td><td>${r.ok}</td><td class="tag ${pcc(r.pct)}">${pc(r.pct)}</td><td>${fd(u)}</td><td>${fd(a.venc)}</td><td class="tag ${s==='Em dia'?'ok':'bad'}">${s}</td></tr>`).join('')||'<tr><td colspan="8" class="mut">Nenhum aluno ativo. Cadastre alunos na aba Alunos.</td></tr>',
+  gr=Object.entries(G).sort((x,y)=>y[1].v-x[1].v).map(([n,g])=>`<tr><td>${esc(n)}</td><td>${g.q}</td><td>${R.format(g.v)}</td></tr>`).join('')||'<tr><td colspan="3" class="mut">Nenhum pagamento no período.</td></tr>';
+  return`<h2>Relatórios</h2><div class="bar"><select onchange="relDias=Number(this.value);show()" style="width:auto" aria-label="Período">${[[7,'Últimos 7 dias'],[30,'Últimos 30 dias'],[90,'Últimos 90 dias']].map(([v,l])=>`<option value="${v}" ${v===relDias?'selected':''}>${l}</option>`).join('')}</select><button class="b g" onclick="csv()">Exportar CSV</button></div>
+  <div class="cards"><div class="box"><div class="k">Frequência média</div><div class="n ${pcc(med)}">${pc(med)}</div></div>
+  <div class="box"><div class="k">Alunos abaixo de 50%</div><div class="n ${baixa?'bad':''}">${baixa}</div></div>
+  <div class="box"><div class="k">Receita no período</div><div class="n hot">${R.format(rec)}</div></div>
+  <div class="box"><div class="k">Envios aguardando análise</div><div class="n">${pend}</div></div></div>
+  <h3 class="sub">Frequência por aluno</h3><div class="wrap"><table><thead><tr><th>Aluno</th><th>Plano</th><th>Previstos</th><th>Validados</th><th>Frequência</th><th>Último treino</th><th>Vencimento</th><th>Situação</th></tr></thead><tbody>${rows}</tbody></table></div>
+  <p class="mut" style="font-size:13px">Ordenado da menor para a maior frequência. Treinos previstos seguem a rotina e o plano atuais, a partir da data de início do aluno.</p>
+  <h3 class="sub">Receita por plano</h3><div class="wrap"><table><thead><tr><th>Plano</th><th>Pagamentos</th><th>Receita</th></tr></thead><tbody>${gr}</tbody></table></div>`}
+function csv(){const L=[['Aluno','Plano','Previstos','Validados','Frequencia (%)','Ultimo treino','Vencimento','Situacao']].concat(relRows().map(({a,r,s,u,plano})=>[a.nome,plano,r.prev,r.ok,r.pct??'',u||'',a.venc||'',s])),
+  q=c=>{c=String(c??'');if(/^[=+\-@]/.test(c))c="'"+c;return'"'+c.replace(/"/g,'""')+'"'},
+  b=new Blob(['\ufeff'+L.map(r=>r.map(q).join(';')).join('\r\n')],{type:'text/csv;charset=utf-8'}),u=URL.createObjectURL(b),k=document.createElement('a');
+  k.href=u;k.download='frequencia-biofit-'+today()+'.csv';document.body.appendChild(k);k.click();k.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);toast('CSV exportado')}
+
+function valid(){const card=e=>`<div class="box"><b>${esc(al(e.alunoId)?.nome||'Aluno removido')}</b><div class="k">${fd(e.data)}, ${esc(tr(e.treinoId)?.nome||'treino')}</div><div data-m="${e.mid}" class="mut" style="margin:10px 0">Carregando…</div>${e.status==='PENDENTE'?`<div class="acts"><button class="b s" onclick="rev(${e.id},1)">Aprovar</button><button class="b g s" onclick="rev(${e.id},0)">Rejeitar</button></div>`:`<span class="tag ${e.status==='APROVADO'?'ok':'bad'}">${e.status==='APROVADO'?'Aprovado':'Rejeitado'}</span>`}</div>`,
+  P=db.envios.filter(e=>e.status==='PENDENTE').sort((a,b)=>a.ts-b.ts),H=db.envios.filter(e=>e.status!=='PENDENTE').sort((a,b)=>b.ts-a.ts).slice(0,6);
+  return`<h2>Validação de treinos</h2>${P.length?`<div class="cards w">${P.map(card).join('')}</div>`:'<p class="mut">Nenhum envio aguardando análise.</p>'}${H.length?`<h2 style="font-size:18px;margin-top:22px">Últimos analisados</h2><div class="cards w">${H.map(card).join('')}</div>`:''}`}
+function rev(id,ok){const e=db.envios.find(x=>x.id===id);e.status=ok?'APROVADO':'REJEITADO';save();show();toast(ok?'Treino aprovado':'Envio rejeitado')}
+
+/* ---------- portal do aluno ---------- */
+function stuLogin(){$('#auth').innerHTML=`<h2 class="logo" style="font-size:30px">Bio<b>fit</b></h2><p class="mut">Acesso do aluno.</p><form id="fs"><label>Usuário<input id="su" required autocomplete="username"></label><label>Senha<input id="sp" type="password" required autocomplete="current-password"></label><p class="err" id="ea"></p><button class="b" style="width:100%">Entrar</button></form><p style="text-align:center"><button class="b g s" type="button" onclick="authUI()">Voltar</button></p>`;
+  $('#fs').onsubmit=async e=>{e.preventDefault();const u=$('#su').value.trim().toLowerCase(),a=db.alunos.find(x=>x.login&&x.login===u);
+    if(!a||!a.h||a.h!==await sha(a.id+':'+$('#sp').value))return $('#ea').textContent='Usuário ou senha inválidos.';
+    if(a.status==='INATIVO')return $('#ea').textContent='Cadastro inativo. Fale com a recepção.';
+    stuId=a.id;try{sessionStorage.setItem('st',a.id)}catch(x){}stuStart()}}
+function stuStart(){$('#auth').hidden=true;$('#app').hidden=true;$('#stu').hidden=false;stuShow()}
+function stuShow(){const a=al(stuId);if(!a||a.status==='INATIVO')return logout();
+  const p=pl(a.planoId),h=today(),late=a.venc<h,wk=week(),sl=wk.map(d=>slot(a,d)),tot=sl.filter(Boolean).length,ok=wk.filter((d,i)=>sl[i]&&envOf(a,d)?.status==='APROVADO').length;
+  const days=wk.map((d,i)=>{const s=sl[i],e=envOf(a,d);let st,b='';
+    if(!s)st='<span class="mut">Descanso</span>';
+    else if(e&&e.status==='APROVADO')st='<span class="tag ok">Validado</span>';
+    else if(e&&e.status==='PENDENTE')st='<span class="tag" style="color:var(--pri)">Em análise</span>';
+    else{st=e?'<span class="tag bad">Rejeitado, envie outro</span>':d<h?'<span class="tag bad">Não enviado</span>':d===h?'<span class="mut">Aguardando sua prova</span>':'<span class="mut">Em breve</span>';if(d<=h&&!late)b=`<button class="b s" onclick="env('${d}')">Enviar foto ou vídeo</button>`}
+    return`<div class="box day ${d===h?'hoje':''}"><div class="k">${DN[parse(d).getDay()]}, ${d.slice(8)}/${d.slice(5,7)}</div><div class="dn">${s?esc(s.t?.nome||'Treino a definir'):'—'}</div>${st}${b}</div>`}).join('');
+  const L=(a.rotina||[]).map(tr).filter(Boolean).map(t=>`<details><summary>${esc(t.nome)} (${t.ex.length} ${t.ex.length===1?'exercício':'exercícios'})</summary>${exList(t)}</details>`).join('')||'<p class="mut">Seu instrutor ainda não definiu seus treinos.</p>';
+  const sH=slot(a,h),hoje=sH&&sH.t?`<div class="box" style="margin-bottom:14px"><div class="k">Treino de hoje</div><div class="dn" style="font-size:20px">${esc(sH.t.nome)}</div>${exList(sH.t)}</div>`:'';
+  $('#stu').innerHTML=`<header><span class="logo">Bio<b>fit</b></span><span class="mut" style="flex:1">Olá, ${esc(a.nome.split(' ')[0])}</span><button class="b g s" onclick="logout()">Sair</button></header><main><h2>Minha semana</h2>${late?`<div class="box bad" style="margin-bottom:14px">Seu plano venceu em ${fd(a.venc)}. Procure a recepção para renovar e voltar a enviar treinos.</div>`:''}
+  <div class="box" style="margin-bottom:14px"><div class="k">Plano ${esc(p?.nome||'—')}, ${p?.freq||3} treinos por semana. Vence em ${fd(a.venc)}.</div><div class="n">${ok} de ${tot} <span class="k">validados nesta semana</span></div><div class="prog"><i style="width:${tot?ok/tot*100:0}%"></i></div></div>
+  ${hoje}<div class="cards">${days}</div><h2 style="margin-top:22px">Meu histórico</h2>${histUI(a)}<h2 style="margin-top:22px">Meus treinos</h2>${L}</main>`;startAnims($('#stu'))}
+function env(d){modal('Enviar prova do treino',`<p class="mut" style="font-size:14px">Treino de ${fd(d)}. Escolha uma foto ou um vídeo, até 50 MB.</p><label>Arquivo<input type="file" name="file" accept="image/*,video/*" required></label>`,'Enviar',x=>{const f=x.file;
+  if(!f||!f.size)return'Escolha um arquivo.';if(!/^(image|video)\//.test(f.type))return'Envie uma foto ou um vídeo.';if(f.size>50*2**20)return'Arquivo acima de 50 MB.';
+  const a=al(stuId),s=slot(a,d),k='m'+nid();mput(k,f).then(()=>{db.envios.push({id:nid(),alunoId:a.id,data:d,treinoId:s?.t?.id||null,mid:k,tipo:f.type.slice(0,5),status:'PENDENTE',ts:Date.now()});save();stuShow();toast('Enviado para análise')}).catch(()=>toast('Não foi possível guardar o arquivo'))})}
+
+/* ---------- backup ---------- */
+function backup(){modal('Backup dos dados',`<p class="mut" style="font-size:14px">Os dados ficam só neste navegador. Copie o texto abaixo para guardar uma cópia, ou cole uma cópia anterior para restaurar. Fotos e vídeos dos alunos não entram no backup.</p><textarea name="j" rows="8" spellcheck="false">${esc(JSON.stringify(db))}</textarea>`,'Restaurar',d=>{
+  try{const n=JSON.parse(d.j);if(!n.alunos||!n.planos||!n.pagamentos)throw 0;db=n;migra();save();toast('Dados restaurados')}catch(e){return'Texto de backup inválido.'}})}
+
+load();try{logged=sessionStorage.getItem('ok')==='1'&&!!db.user}catch(e){}
+migra();save();
+let stuId=null;try{stuId=Number(sessionStorage.getItem('st'))||null}catch(e){}
+if(stuId&&al(stuId))stuStart();else if(logged)start();else authUI();
+if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>
